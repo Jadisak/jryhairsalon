@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JRY Hair Spa & Salon</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <style>
+        /* Custom styles for minimal design */
+        body {
+            font-family: Noto Sans Thai, sans-serif;
+        }
+        .section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            text-align: center;
+        }
+        .section h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .section p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: #000; /* Example: Black button */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+        }
+        .dot-nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+        .dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+        .dot.active {
+            background-color: #ff5f2f;
+        }
+        
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .service-card { transition: all 0.3s ease; }
+        .service-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .time-slot { transition: all 0.2s ease; }
+        .time-slot.selected { background: #667eea; color: white; }
+        .floating-button { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .booking-section { background: #e257af47; backdrop-filter: blur(10px); }
+        .price-display { background: linear-gradient(45deg, #4CAF50, #45a049); }
+
+    </style>
+</head>
+<body class="">
+
+<div x-data="{ activeSection: 'home', scrollTo(section) { this.activeSection = section; this.$refs[section].scrollIntoView({ behavior: 'smooth' }); } }">
+    <div class="absolute inset-0 -z-50 bg-[url(inshop-00.png)] bg-cover bg-center bg-no-repeat"></div>
+    <main class="snap-y snap-mandatory overflow-y-scroll h-screen text-white bg-gradient-to-bl from-purple-600/70 to-pink-800/90">
+        <!-- Home Section -->
+        <section id="home" x-ref="home" class="section snap-start">
+            <div class="px-2 xborder">
+                <div class="text-shadow-lg relative">
+                    <img src="SQ-logo-white.svg" alt="" stroke="currentColor" fill="none" viewBox="0 0 24 24" class="w-[140px] mx-auto ">
+                    <img src="SQ-logo-white.svg" alt="" stroke="currentColor" fill="none" viewBox="0 0 24 24" class="absolute mx-auto w-[140px] blur-sm inset-0 animate-pulse">
+                    <div class="relative">
+                        <div class="text-3xl sm:text-5xl text-white font-thin py-4 text-shadow-xs w-full z-10">
+                            Hair Spa & Salon 
+                        </div>
+                        <div class="text-3xl sm:text-5xl text-white/80 font-thin py-4 text-shadow-xs w-full absolute mx-auto blur inset-0">
+                            Hair Spa & Salon 
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="border-2 border-white/30 duration-700 w-[300px] sm:w-[400px] mx-auto h-[250px] sm:h-[400px] rounded-2xl overflow-hidden">
+                    <img src="inshop-00.png" alt="" class="scale-110 hover:scale-100 duration-700 w-full object-cover">
+                </div>
+                <!--  -->
+                <p class="my-3 sm:text-xl text-lg max-w-3xl mx-auto font-thin">
+                    ด้วยทีมช่างที่มีประสบการณ์กว่า 20 ปี<span class="md:hidden"><br></span>  <span class="md:hidden"> </span>และผลิตภัณฑ์คุณภาพระดับโลก
+                </p>
+                <div class="mt-4 sm:space-x-4 sm:space-y-0 space-y-2 justify-center items-center mx-auto flex flex-col sm:flex-row w-fit">
+                    <button 
+                        @click="activeSection = 'services'; $refs.services.scrollIntoView({ behavior: 'smooth' })"
+                        class="border-2 border-white/30 bg-gradient-to-tr from-pink-700 to-red-400 hover:bg-gradient-to-bl from-pink-200 to-red-400 text-lg text-white w-36 py-1 rounded-full transition duration-700">
+                        บริการของเรา
+                    </button>
+                    <div class="mt-4 sm:space-x-4 sm:gap-0 gap-4 flex justify-center items-center mx-auto flex flex-row w-fit">
+                        
+                        <button 
+                            @click="activeSection = 'booking'; $refs.booking.scrollIntoView({ behavior: 'smooth' })"
+                            class="border-2 border-white/30 bg-gradient-to-tr from-pink-700 to-red-400 hover:bg-gradient-to-bl from-pink-200 to-red-400 text-lg text-white w-36 py-1 rounded-full transition duration-700">
+                            โปรดจองเวลา
+                        </button>
+                        <button 
+                            @click="activeSection = 'contact'; $refs.contact.scrollIntoView({ behavior: 'smooth' })"
+                            class="border-2 border-white/30 bg-gradient-to-tr from-pink-700 to-red-400 hover:bg-gradient-to-bl from-pink-200 to-red-400 text-lg text-white w-36 py-1 rounded-full transition duration-700">
+                            ติดต่อเรา
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" x-ref="services" class="section snap-start overflow-hidden">
+            <div class="text-3xl text-white font-thin pb-2 mb-4 border-b w-fit">
+                ค่าบริการ และผลิตภัณฑ์
+            </div>
+            <div class="flex flex-col lg:flex-row sm:gap-4 gap-4 mx-auto overflow-hidden duration-700">
+                <!-- Features Section 1 -->
+                <div class="w-[300px] border-2 border-white/30 rounded-xl overflow-hidden"> 
+                    <div class="bg-[url(inshop-01.png)] duration-700 bg-center bg-cover h-[190px] sm:h-[400px]">
+                        <div class="flex flex-col justify-center items-center text-white font-thin h-full w-full hover:bg-gradient-to-bl from-amber-600/30 to-rose-700/40 duration-700 hover:backdrop-blur-sm">
+                            <div class="flex flex-col justify-center items-center opacity-0 hover:opacity-100 w-full h-full duration-700 backdrop-blur-sm sm:pt-12">
+                                <h3 class="text-2xl">เคมีผม ทรีตเม้นต์</h3>
+                                <h3 class="p-2 text-center text-3xl font-semibold">2500 - 4500 บาท</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Features Section 2 -->
+                <div class="w-[300px] border-2 border-white/30 rounded-xl overflow-hidden"> 
+                    <div class="bg-[url(inshop-02.png)] duration-700 bg-center bg-cover h-[190px] sm:h-[400px]">
+                        <div class="flex flex-col justify-center items-center text-white font-thin h-full w-full hover:bg-gradient-to-bl from-amber-600/30 to-rose-700/40 duration-700 hover:backdrop-blur-sm">
+                            <div class="flex flex-col justify-center items-center opacity-0 hover:opacity-100 w-full h-full duration-700 backdrop-blur-sm sm:pt-12">
+                                <h3 class="text-2xl">เคมีผม ทรีตเม้นต์</h3>
+                                <h3 class="p-2 text-center text-3xl font-semibold">2500 - 4500 บาท</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Features Section 3 -->
+                <div class="w-[300px] border-2 border-white/30 rounded-xl overflow-hidden"> 
+                    <div class="bg-[url(inshop-03.png)] duration-700 bg-center bg-cover h-[190px] sm:h-[400px]">
+                        <div class="flex flex-col justify-center items-center text-white font-thin h-full w-full hover:bg-gradient-to-bl from-amber-600/30 to-rose-700/40 duration-700 hover:backdrop-blur-sm">
+                            <div class="flex flex-col justify-center items-center opacity-0 hover:opacity-100 w-full h-full duration-700 backdrop-blur-sm sm:pt-12">
+                                <h3 class="text-2xl">เคมีผม ทรีตเม้นต์</h3>
+                                <h3 class="p-2 text-center text-3xl font-semibold">2500 - 4500 บาท</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button 
+                @click="activeSection = 'booking'; $refs.booking.scrollIntoView({ behavior: 'smooth' })"
+                class="border-2 border-white/30 bg-gradient-to-tr from-pink-700 to-red-400 hover:bg-gradient-to-bl from-pink-200 to-red-400 text-lg text-white w-36 my-6 py-2  rounded-full transition duration-700">
+                โปรดจองเวลา
+            </button>
+        </section>
+        
+        <!-- Booking Section -->
+        <section id="booking" x-ref="booking" class="p-0 duration-700 snap-start">
+            <div class="section max-w-[500px] md:w-[700px] mx-auto xborder">
+                <div class="booking-section rounded-2xl p-2 shadow-xl">
+                    <h2 class="text-2xl font-bold text-center mb-8 text-gray-100">
+                        <i class="fas fa-calendar-alt mr-2 text-blue-200"></i>จองเวลาทำผม
+                    </h2>
+                    
+                    <form id="bookingForm" class="space-y-2">
+                        <!-- Customer Info -->
+                        <div class="space-y-2">
+                            <div>
+                                <label class="flex justify-left text-sm font-medium text-gray-100 mb-1">
+                                    <i class="fas fa-user mr-1"></i>ชื่อ-สกุล
+                                </label>
+                                <input type="tel" id="customerName" style="background-color: #ffffff36; color: #fff;" required
+                                    class="w-full px-4 py-1 bg-white/50 rounded-md">
+                            </div>
+                            <div>
+                                <label class="flex justify-left text-sm font-medium text-gray-100 mb-1">
+                                    <i class="fas fa-phone mr-1"></i>เบอร์โทรศัพท์
+                                </label>
+                                <input type="tel" id="customerPhone" style="background-color: #ffffff36; color: #fff;" required
+                                    class="w-full px-4 py-1 rounded-md">
+                            </div>
+                        </div>
+
+                        <!-- Service Selection -->
+                        <div>
+                            <label class="flex justify-left text-sm font-medium text-gray-100 mb-1">
+                                <i class="fas fa-scissors mr-1"></i>เลือกบริการ
+                            </label>
+                            <select id="serviceSelect" style="background-color: #ffffff36; color: #fff;" required
+                                class="w-full px-6 py-1 rounded-md">
+                                <option value="">...</option>
+                                <option value="ดัด-สระผม" data-price-min="400" data-price-max="800">ดัด-สระผม (400-800฿)</option>
+                                <option value="ย้อมผม" data-price-min="1500" data-price-max="3000">ย้อมผม (1,500-3,000฿)</option>
+                                <option value="เซ็ทผม" data-price-min="300" data-price-max="600">เซ็ทผม (300-600฿)</option>
+                                <option value="เคมีผม" data-price-min="2500" data-price-max="4500">เคมีผม ทรีตเม้นต์ (2,500-4,500฿)</option>
+                                <option value="สปาผม" data-price-min="2000" data-price-max="3500">สปาผม (2,000-3,500฿)</option>
+                            </select>
+                        </div>
+
+                        <!-- Date Selection -->
+                        <div>
+                            <label class="flex justify-left text-sm font-medium text-gray-100 mb-1">
+                                <i class="fas fa-calendar mr-1 text-white"></i>เลือกวันที่
+                            </label>
+                            <input type="date" id="bookingDate" style="background-color: #ffffff36; color: #fff;" required
+                                class="w-full px-6 py-1 bg-white/50 rounded-md">
+                        </div>
+
+                        <!-- Time Selection -->
+                        <div>
+                            <label class="flex justify-left text-sm font-medium text-gray-100 mb-1">
+                                <i class="fas fa-clock mr-1"></i>เลือกเวลา
+                            </label>
+                            <div class="grid grid-cols-3 gap-0.5 text-white">
+                                <button type="button" class="time-slot px-3 py-2 xborder bg-pink-600 text-sm font-medium hover:bg-red-700" data-time="10:00-12:00">
+                                    10:00-12:00
+                                </button>
+                                <button type="button" class="time-slot px-3 py-2 xborder bg-pink-600 text-sm font-medium hover:bg-red-700" data-time="12:00-14:00">
+                                    12:00-14:00
+                                </button>
+                                <button type="button" class="time-slot px-3 py-2 xborder bg-pink-600 text-sm font-medium hover:bg-red-700" data-time="14:00-16:00">
+                                    14:00-16:00
+                                </button>
+                                <button type="button" class="time-slot px-3 py-2 xborder bg-pink-600 text-sm font-medium hover:bg-red-700" data-time="16:00-18:00">
+                                    16:00-18:00
+                                </button>
+                                <button type="button" class="time-slot px-3 py-2 xborder bg-pink-600 text-sm font-medium hover:bg-red-700" data-time="18:00-20:00">
+                                    18:00-20:00
+                                </button>
+                                <button type="button" class="time-slot px-3 py-2 xborder bg-pink-600 text-sm font-medium hover:bg-red-700" data-time="20:00-22:00">
+                                    20:00-22:00
+                                </button>
+                            </div>
+                            <input type="hidden" id="selectedTime" required>
+                        </div>
+
+                        <!-- Price Display -->
+                        <div id="priceDisplay" class="price-display rounded-lg p-4 text-white text-center hidden">
+                            <p class="text-sm opacity-90">ราคาประมาณ</p>
+                            <p class="text-2xl font-bold" id="priceRange">-</p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submitBooking"
+                            class="w-full bg-gradient-to-r from-amber-600 to-pink-700 text-white font-bold py-4 px-6 rounded-lg hover:from-amber-500 hover:to-pink-500 duration-700 shadow-lg">
+                            <i class="fas fa-paper-plane mr-2"></i>ยืนยันการจอง
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" x-ref="contact" class="section snap-start">
+            <div class="text-3xl sm:text-5xl text-white mb-4 px-6 py-2 border-b mb-4">ติดต่อเรา</div>            
+            <p>573 ถนนจันทร์&nbsp;16&nbsp;แยก&nbsp;16<br>เขตสาธร&nbsp;กรุงเทพมหานคร 10120</p>
+            <p>โทร.098-765-4321</p>
+            <!-- Map -->
+            <div class="mt-4 w-full sm:w-[500px] mx-auto p-2 bg-red-400/70 rounded-lg">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.1184901365295!2d100.52817651177811!3d13.71127268662081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29f4aa3a20e2b%3A0x83bf84d816232b68!2sJ.%20R.%20Y.!5e0!3m2!1sen!2sth!4v1750581229267!5m2!1sen!2sth" width="100%" height="380" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Minimal Dot Navigation -->
+    <nav class="dot-nav">
+        <template x-for="section in ['home', 'services', 'booking', 'contact']" :key="section">
+            <div 
+                class="dot"
+                :class="{ 'active': activeSection === section }"
+                @click="scrollTo(section)"
+            ></div>
+        </template>
+    </nav>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // --- ค่าที่ต้องแก้ไข ---
+    const LIFF_ID = '2007571126-5jj0dZOB'; // <-- ใส่ LIFF ID ของคุณที่นี่
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyI6c5msafsPiZA3Zk2MBuom2szPXgyJFCnrocotHtB4QYxoDmHAskRDLZTzJKo6vyzNg/exec'; // <-- ใส่ URL ของ Web App ที่ได้จากการ Deploy
+
+    // --- Element References ---
+    const statusMessage = document.getElementById('statusMessage');
+    const submitButton = document.getElementById('submitButton');
+    const bookingForm = document.getElementById('bookingForm');
+
+    let lineProfile = null;
+
+    async function initializeLiff() {
+        statusMessage.textContent = 'กำลังโหลดข้อมูล LINE...';
+        try {
+            await liff.init({ liffId: LIFF_ID });
+            if (!liff.isLoggedIn()) {
+                statusMessage.textContent = 'กรุณาเข้าสู่ระบบ LINE เพื่อทำการจอง';
+                liff.login({ redirectUri: window.location.href });
+            } else {
+                lineProfile = await liff.getProfile();
+                statusMessage.textContent = `สวัสดีคุณ ${lineProfile.displayName}, กรุณากรอกข้อมูลเพื่อจองคิว`;
+                document.getElementById('customerName').value = lineProfile.displayName;
+            }
+        } catch (error) {
+            console.error('LIFF Initialization failed', error);
+            statusMessage.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อกับ LINE';
+        }
+    }
+
+    initializeLiff();
+
+    bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!lineProfile) {
+            alert('ยังไม่สามารถดึงข้อมูล LINE ได้ กรุณาลองใหม่อีกครั้ง');
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = 'กำลังส่งข้อมูล...';
+
+        const formData = {
+            lineUserId: lineProfile.userId,
+            lineDisplayName: lineProfile.displayName,
+            name: document.getElementById('customerName').value,
+            phone: document.getElementById('customerPhone').value,
+            service: document.querySelector('input[name="service"]:checked').value,
+            bookingDate: document.getElementById('bookingDate').value,
+            timeSlot: document.querySelector('input[name="timeSlot"]:checked').value,
+        };
+
+        try {
+            await fetch(GAS_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) });
+            alert('การจองสำเร็จ! เราได้ส่งข้อความยืนยันไปยัง LINE ของคุณแล้ว');
+            bookingForm.reset();
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = 'ยืนยันการจอง';
+        }
+    });
+});
+</script>
+</body>
+</html>
